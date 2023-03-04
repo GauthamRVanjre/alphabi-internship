@@ -6,6 +6,8 @@ import Search from "./pages/Search/Search";
 
 function App() {
   return (
+    // The Router component is the top-level component that is used to set up the router. It is
+    // wrapping the entire application.
     <>
       <Router>
         <Routes>

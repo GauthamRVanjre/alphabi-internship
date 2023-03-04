@@ -10,6 +10,12 @@ const SignUp = () => {
   const [signUpSuccess, setSignUpSuccess] = useState(false);
   const navigate = useNavigate();
 
+  /**
+   * When the user types in the email input field, the value of the input field is set to the state of
+   * the email variable.
+   * @param event - The event object is a JavaScript event that is sent to an element when an event
+   * occurs on the element.
+   */
   const handleEmailChange = (event) => {
     setRegisterEmail(event.target.value);
   };
@@ -18,6 +24,13 @@ const SignUp = () => {
     setRegisterPassword(event.target.value);
   };
 
+  /**
+   * If the password is longer than 6 characters, the email is longer than 0 characters, and the
+   * password is longer than 0 characters, then create a user with the email and password, log the
+   * user, set the sign up success to true, and navigate to the search page. The createUserWithEmailAndPassword
+   * function is a Firebase function that creates a user with the email and password. The auth
+   * variable is the Firebase authentication object.
+   */
   const register = async () => {
     try {
       if (

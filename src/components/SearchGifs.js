@@ -1,19 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { API_KEY } from "../constants";
+import GifsCard from "./GifsCard";
 
 const SearchGifs = ({ searchterm }) => {
   const [gifs, setGifs] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [gifsPerPage] = useState(10);
+  const [page, setPage] = useState(1);
 
+  /**
+   * The fetchGifs function is an async function that takes a search term as an argument. It sets the
+   * loading state to true, the error state to false, and then tries to fetch the data from the API. If
+   * it succeeds, it sets the gifs state to the data from the API, and if it fails, it sets the error
+   * state to true. Finally, it sets the loading state to false.
+   * @param searchTerm - The search term that you want to use to search for gifs.
+   */
   const fetchGifs = async (searchTerm) => {
     setLoading(true);
     setError(false);
     try {
       const response = await fetch(
-        `https://api.giphy.com/v1/gifs/search?api_key=${API_KEY}&q=${searchterm}&limit=15&offset=0&rating=g&lang=en`
+        `https://api.giphy.com/v1/gifs/search?api_key=${API_KEY}&q=${searchterm}&limit=50&offset=0&rating=g&lang=en`
       );
       const data = await response.json();
       setGifs(data.data);
@@ -28,8 +35,24 @@ const SearchGifs = ({ searchterm }) => {
     fetchGifs(searchterm);
   }, [searchterm]);
 
+  /**
+   * If the selected page is between 1 and the total number of pages, and the selected page is not the
+   * current page, then set the current page to the selected page.
+   * @param selectedPage - The page number that the user has selected.
+   */
+  const selectPageHandler = (selectedPage) => {
+    if (
+      selectedPage >= 1 &&
+      selectedPage <= gifs.length / 10 &&
+      selectedPage !== page
+    ) {
+      setPage(selectedPage);
+    }
+  };
+
   if (loading)
     return (
+      // displaying a spinner while the gifs are loading
       <div class="spinner-border App-header" role="status">
         <span class="visually-hidden">Loading...</span>
       </div>
@@ -40,39 +63,50 @@ const SearchGifs = ({ searchterm }) => {
       <>
         <div className="search-results container">
           <div className="row">
-            {gifs.map((gif) => {
+            {/* rendering the gifs */}
+            {gifs.slice(page * 10 - 10, page * 10).map((gif) => {
               return (
                 <div className="col-sm-6 col-md-4">
-                  <div key={gif.id} className="card">
-                    <img
-                      className="gif-img"
-                      key={gif.id}
-                      src={gif.images.fixed_height.url}
-                      alt={gif.title}
-                    />
-                    <div style={{ padding: "10px" }}>
-                      <div className="card-username-container">
-                        <h5 className="card-title">{gif.user?.display_name}</h5>
-                        <p> &#11088; </p>
-                      </div>
-                      <p className="card-text">@{gif.user?.username}</p>
-                    </div>
-                  </div>
+                  <GifsCard gif={gif} />
                 </div>
               );
             })}
           </div>
         </div>
+
+        {/* rendering the pagination buttons */}
+        {gifs.length > 0 && (
+          <div className="pagination">
+            <span
+              onClick={() => selectPageHandler(page - 1)}
+              className={page > 1 ? "" : "pagination__disable"}
+            >
+              ◀
+            </span>
+
+            {[...Array(gifs.length / 10)].map((_, i) => {
+              return (
+                <span
+                  key={i}
+                  className={page === i + 1 ? "pagination__selected" : ""}
+                  onClick={() => selectPageHandler(i + 1)}
+                >
+                  {i + 1}
+                </span>
+              );
+            })}
+
+            <span
+              onClick={() => selectPageHandler(page + 1)}
+              className={page < gifs.length / 10 ? "" : "pagination__disable"}
+            >
+              ▶
+            </span>
+          </div>
+        )}
       </>
     );
   }
 };
 
-{
-  /* <img
-  key={gif.id}
-  src={gif.images.fixed_height.url}
-  alt={gif.title}
-/> */
-}
 export default SearchGifs;

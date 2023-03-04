@@ -5,6 +5,12 @@ import "./Search.css";
 const Search = () => {
   const [searchTerm, setSearchTerm] = React.useState("");
 
+  /**
+   * When the user types in the search box, the value of the search box is set to the state of the
+   * search term.
+   * @param event - The event object is a JavaScript event that is sent to an element when an event
+   * occurs on the element.
+   */
   const handleSearchTermChange = (event) => {
     setSearchTerm(event.target.value);
   };
