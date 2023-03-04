@@ -28,6 +28,7 @@ const Search = () => {
           <button className="btn btn-dark">Search</button>
         </div>
 
+        {/* the search term is passed as a prop to the SearchGifs component as a state itself so that it can support hot reload */}
         <SearchGifs searchterm={searchTerm} />
       </section>
     </>

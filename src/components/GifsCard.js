@@ -1,5 +1,6 @@
 import React from "react";
 
+// the main job of this component is to render the gifs on the screen
 const GifsCard = ({ gif }) => {
   return (
     <div key={gif.id} className="card">

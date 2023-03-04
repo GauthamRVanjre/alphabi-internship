@@ -27,7 +27,7 @@ const SignUp = () => {
   /**
    * If the password is longer than 6 characters, the email is longer than 0 characters, and the
    * password is longer than 0 characters, then create a user with the email and password, log the
-   * user, set the sign up success to true, and navigate to the search page. The createUserWithEmailAndPassword
+   * user, set the sign up success to true, and navigate to the search page using useNavigate() from react-router-dom. The createUserWithEmailAndPassword
    * function is a Firebase function that creates a user with the email and password. The auth
    * variable is the Firebase authentication object.
    */

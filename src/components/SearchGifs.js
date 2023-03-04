@@ -31,6 +31,7 @@ const SearchGifs = ({ searchterm }) => {
     setLoading(false);
   };
 
+  /* A hook that is called after every change in the search term. It is calling the fetchgifs function whenerver the searchterm changes */
   useEffect(() => {
     fetchGifs(searchterm);
   }, [searchterm]);
@@ -67,6 +68,7 @@ const SearchGifs = ({ searchterm }) => {
             {gifs.slice(page * 10 - 10, page * 10).map((gif) => {
               return (
                 <div className="col-sm-6 col-md-4">
+                  {/* the particular mapped component is passed to the gifscard component to paint the gif on the screen */}
                   <GifsCard gif={gif} />
                 </div>
               );
